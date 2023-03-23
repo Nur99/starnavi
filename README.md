@@ -1,13 +1,9 @@
-<p align="center">
-  <a href="https://www.yushi.dev/" target="_blank" rel="noreferrer"><img src="https://user-images.githubusercontent.com/75753187/123350185-74ce0900-d528-11eb-848d-d92955dbb944.png" alt="my banner"></a>
-</p>
-
 <h3 align="center">
-Hi there, I'm <a href="https://www.yushi.dev/" target="_blank" rel="noreferrer">Yu</a> 👋
+Hi there, I'm Nurymzhan 👋
 </h3>
 
 <h2 align="center">
-I'm a Software Engineer 💻, VideoMaker 📸, and Amateur Table Tennis player 🎨!
+I'm a Software Engineer 💻, VideoMaker 📸, and Amateur Table Tennis player!
 </h2> 
 
 I love the entire process of implementing architectures, editing videos and algorithms and data structures. 
