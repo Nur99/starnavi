@@ -1,11 +1,11 @@
 import base64
 import os
 import random
-import sqlite3
 import sys
 from datetime import datetime
 from typing import List
 
+import psycopg2
 from dotenv import load_dotenv
 from faker import Faker
 
@@ -188,7 +188,12 @@ config_methods = {
 
 def get_cursor():
     try:
-        connection = sqlite3.connect(os.getenv("DB_NAME"))
+        connection = psycopg2.connect(
+            dbname=os.getenv("POSTGRES_DB"),
+            host=os.getenv("POSTGRES_HOST"),
+            user=os.getenv("POSTGRES_USER"),
+            password=os.getenv("POSTGRES_PASSWORD"),
+        )
     except Exception as e:
         raise Exception(str(e))
 

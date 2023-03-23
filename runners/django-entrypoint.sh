@@ -37,12 +37,9 @@ NUM_WORKERS=${NUM_WORKERS:-5}
 TIMEOUT=${TIMEOUT:-180}
 
 
-python manage.py collectstatic --no-input
 python manage.py migrate
-python manage.py compilemessages -l ru
-python manage.py compilemessages -l kk
 
-if [ "$DEBUG_BASH" = "on" ];
+if [ "$DEBUG" = "on" ];
 then
     gunicorn config.wsgi:application \
         --reload \

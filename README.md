@@ -41,7 +41,7 @@ I love the entire process of implementing architectures, editing videos and algo
 
 ## 📝 How to run Django project
 
-- py
+- docker-compose up --build
 
 ## 📝 How to run bot
 
