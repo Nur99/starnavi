@@ -34,3 +34,6 @@ share/python-wheels/
 # Ide's
 /.idea/
 /.code/
+
+# database
+fantasy_game

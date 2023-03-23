@@ -1,21 +1,17 @@
 from django.db.models import Count
 
-from apps.posts.models import DisLike, Like, Post
+from apps.posts.models import Like, Post
 
 
-def create_post(*, user, title, text):
+def create_post(user, title, text):
     Post.objects.create(author=user, title=title, text=text)
 
 
-def like_post(*, user, post_id):
-    Like.objects.create(author=user, post_id=post_id)
+def like_post(user, post_id, like_type):
+    Like.objects.create(author=user, post_id=post_id, like_type=like_type)
 
 
-def dislike_post(*, user, post_id):
-    DisLike.objects.create(author=user, post_id=post_id)
-
-
-def get_analytics(*, date_from, date_to):
+def get_analytics(date_from, date_to):
     likes = Like.objects.all()
     if date_from:
         likes = likes.filter(created__gte=date_from)

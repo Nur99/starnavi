@@ -8,7 +8,7 @@ from .constants import JWTAlgorithm
 from .exceptions import CustomException
 
 
-def decode_token(*, token: str) -> Dict[str, Any]:
+def decode_token(token: str) -> Dict[str, Any]:
     try:
         payload = jwt.decode(
             token,

@@ -52,6 +52,6 @@ def login_user(username, password):
     if not user:
         raise CustomException()
 
-    CustomUser.objects.filter(username=username).update(last_login_time=timezone.now())
+    CustomUser.objects.filter(username=username).update(last_login=timezone.now())
 
     return generate_tokens(user)
