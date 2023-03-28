@@ -49,4 +49,3 @@ I love the entire process of implementing architectures, editing videos and algo
 - python bot.py max_posts_per_user
 - python bot.py max_likes_per_user
 - python bot.py signup_users N (N is a random integer number. You can create N users, then they will create K (0, max_posts_per_users) posts. New users will like new posts randomly. )
-- the bot can work without docker, it is enough to create virtual environment and install requirements.txt, migration commands and just run commands above. it is enough to work with sqlite
