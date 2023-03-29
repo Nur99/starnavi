@@ -15,6 +15,10 @@ load_dotenv()
 fake = Faker()
 
 
+def handle_cursor_result(cursor_result):
+    return cursor_result if cursor_result is not None else 0
+
+
 def get_encoded(word):
     sample_string_bytes = word.encode("ascii")
 
@@ -27,41 +31,41 @@ def get_encoded(word):
 def number_of_users():
     cursor = get_cursor()
 
-    result = cursor.execute("SELECT COUNT(*) FROM users_customuser")
+    cursor.execute("SELECT COUNT(*) FROM users_customuser;")
 
-    return result.fetchone()[0]
+    return handle_cursor_result(cursor.fetchone()[0])
 
 
 def get_last_user_id():
     cursor = get_cursor()
 
-    result = cursor.execute("SELECT MAX(id) FROM users_customuser")
+    cursor.execute("SELECT MAX(id) FROM users_customuser;")
 
-    return result.fetchone()[0]
+    return handle_cursor_result(cursor.fetchone()[0])
 
 
 def get_last_like_id():
     cursor = get_cursor()
 
-    result = cursor.execute("SELECT MAX(id) FROM posts_like")
+    cursor.execute("SELECT MAX(id) FROM posts_like")
 
-    return result.fetchone()[0]
+    return handle_cursor_result(cursor.fetchone()[0])
 
 
 def number_of_posts():
     cursor = get_cursor()
 
-    result = cursor.execute("SELECT COUNT(*) FROM posts_post")
+    cursor.execute("SELECT COUNT(*) FROM posts_post")
 
-    return result.fetchone()[0]
+    return handle_cursor_result(cursor.fetchone()[0])
 
 
 def get_last_post_id():
     cursor = get_cursor()
 
-    result = cursor.execute("SELECT MAX(id) FROM posts_post")
+    cursor.execute("SELECT MAX(id) FROM posts_post")
 
-    return result.fetchone()[0]
+    return handle_cursor_result(cursor.fetchone()[0])
 
 
 def max_posts_per_user():
@@ -96,7 +100,9 @@ def create_users(user_amount):
     cursor = get_cursor()
 
     cursor.executemany(
-        "INSERT INTO users_customuser VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO users_customuser (id, password, last_login, is_superuser, "
+        "username, first_name, last_name, email, is_staff, is_active, date_joined, "
+        "last_activity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
         user_data,
     )
 
@@ -118,7 +124,7 @@ def create_likes_and_dislikes_for_new_posts(
             for i in range(0, random.randint(0, constants.MAX_LIKE_PER_USER)):
                 like_count += 1
                 likes.append(
-                    (last_like_id + like_count, current_time, user_id, post_id, "LIKE")
+                    (last_like_id + like_count, current_time, "LIKE", user_id, post_id)
                 )
             for i in range(0, random.randint(0, constants.MAX_DISLIKE_PER_USER)):
                 like_count += 1
@@ -126,15 +132,17 @@ def create_likes_and_dislikes_for_new_posts(
                     (
                         last_like_id + like_count,
                         current_time,
+                        "DISLIKE",
                         user_id,
                         post_id,
-                        "DISLIKE",
                     )
                 )
 
+    data = likes + dislikes
+
     cursor.executemany(
-        "INSERT INTO posts_like VALUES (?, ?, ?, ?, ?)",
-        likes + dislikes,
+        "INSERT INTO posts_like (id, created, like_type, author_id, post_id) VALUES (%s, %s, %s, %s, %s)",
+        data,
     )
 
     cursor.connection.commit()
@@ -155,7 +163,7 @@ def create_posts_for_new_users(last_user_id, new_last_user_id):
             )
 
     cursor.executemany(
-        "INSERT INTO posts_post VALUES (?, ?, ?, ?)",
+        "INSERT INTO posts_post (id, title, text, author_id) VALUES (%s, %s, %s, %s)",
         post_data,
     )
     cursor.connection.commit()
